@@ -1,0 +1,47 @@
+
+<polymer-element name="at-chart-core" attributes="data">
+    <template>
+        <link rel="stylesheet" href="../c3/c3.css">
+      <div style="border:10px solid green;"
+        <div id="chart"></div>
+    </template>
+
+    <script>
+        Polymer('at-chart-core', {            
+            data: {},
+			domReady: function() {
+				debugger;
+				// exit if parent component is not running directly in designer
+				//if(!this.parentNode.id || !this.parentNode.id=="design_host") return;
+				
+				// get sample data 
+				var txt = this.innerHTML.trim();
+				if(!txt) return;
+				
+				var json = null;
+				
+				try {
+					json = JSON.parse(txt);
+				}
+				catch(err) {		
+					var msg = document.createElement("div");
+					msg.innerHTML = "<br>Error: " + err.message + "<br>";
+					this.shadowRoot.appendChild(msg);
+				}
+
+				if(json != null) {
+					this.data = json;
+				}
+              
+              var cdata = this.data;
+              cdata.bindto = this.$.chart;
+              var chart = c3.generate(cdata);
+				
+			},
+            ready: function () {
+				
+			}
+        });
+
+    </script>
+</polymer-element>
