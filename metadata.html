@@ -1,6 +1,9 @@
-<x-meta id="at-chart-core" label="at-chart-core">
+<x-meta id="at-chart-core" label="Basic" group="adenin Charts">
+  
+    <property name="charttype" kind="select" options="bar,line,pie,donut,spline,step,area,area-spline,default"></property>
+  
   <template>
-    <at-chart-core style="width:300px;height:200px;">{
+    <at-chart-core>{
     "data": {
         "columns": [
             ["data1", 100, 200, 150, 300, 200],
