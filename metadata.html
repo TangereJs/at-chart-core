@@ -1,9 +1,12 @@
 <x-meta id="at-chart-core" label="Basic" group="adenin Charts">
   
-    <property name="charttype" kind="select" options="bar,line,pie,donut,spline,step,area,area-spline,default"></property>
+  <property name="charttype" kind="select" options="bar,line,pie,donut,spline,step,area,area-spline,default"></property>
+  <property name="gridlines" kind="select" options="none,y,x,xy"></property>
+  <property name="legendposition" kind="select" options="none,bottom,right,inset"></property>
+  <property name="tooltip" kind="select" options="none,default,grouped"></property>
   
   <template>
-    <at-chart-core>{
+    <at-chart-core charttype="bar" gridlines="none" legendposition="bottom" tooltip="default">{
     "data": {
         "columns": [
             ["data1", 100, 200, 150, 300, 200],

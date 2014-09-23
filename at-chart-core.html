@@ -17,12 +17,17 @@
 
     <script>
         Polymer('at-chart-core', { 
-            charttype: 'line',
-            c3chart: {},
-            data: {},
+            publish: {
+              charttype: { value: 'line', reflect: true },
+              gridlines: { value: 'none', reflect: true },
+              legendposition: { value: 'none', reflect: true },
+              tooltip: { value: 'none', reflect: true },
+              c3chart: {},
+              data: {}
+            },
           
             observe: {
-              'charttype c3chart data': 'initialize'
+              'charttype c3chart data gridlines legendposition tooltip': 'initialize'
             },
           
             initialize: function() {
@@ -30,9 +35,46 @@
                 chart.data = {};              
                 Platform.mixin(chart,this.c3chart);              
                 
-                if(this.type != 'default') { chart.data.type = this.charttype; }
+                if(this.charttype != 'default') { chart.data.type = this.charttype; }
+              
+                if(this.gridlines != "none" && this.gridlines != "") {
+                  chart.grid = {};
+                  
+                  if(this.gridlines=="x" || this.gridlines == "xy") {
+                    chart.grid.x = { show: true };
+                  }
+                  
+                 if(this.gridlines=="y" || this.gridlines == "xy") {
+                    chart.grid.y = { show: true };
+                  }
+
+                }
+              
+                if(this.legendposition != "") {
+                  chart.legend = {};
+                  
+                  if(this.legendposition != "none") {
+                    chart.legend = { position: this.legendposition };
+                  } else {
+                    chart.legend = { show: false };
+                  }            
+
+                }
+              
+                if(this.tooltip != "") {
+                  chart.tooltip = {grouped: true, show: true};                                   
+                  
+                  if(this.tooltip == "default") {
+                    chart.tooltip = { grouped: false };
+                  } 
+                  if(this.tooltip == "none") {
+                    chart.tooltip = { show: false };
+                  }            
+
+                }
               
                 chart.bindto = this.$.chart;
+
                 this._chartContainer = c3.generate(chart);
               
                 this.async(function() {
