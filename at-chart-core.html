@@ -1,8 +1,10 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../at-core-theme/at-core-theme.html">
 <link rel="import" href="../at-chart-core/c3-import.html">
 
 <dom-module id="at-chart-core">
     <link rel="stylesheet" href="../c3/c3.css">
+    <link rel="import" type="css" href="../c3/c3.css">
     <style>
        :host {
          position: relative;
@@ -11,7 +13,8 @@
          width:100%;
        }
     </style>
-    <template>      
+    <template>
+        <at-core-theme></at-core-theme>
         <div style="border:4px solid transparent;">
             <div id="chart">
                 
@@ -57,7 +60,7 @@
               }
             },
           
-            observe: {
+            observers: {
               'charttype c3chart data gridlines legendposition tooltip': 'initialize'
             },
           
@@ -67,55 +70,55 @@
                 }
                 
                 this.debounce('initChard', function(){
-                var chart = {};
-                    
-                //this.data has priority over data set as component inner html
-                chart.data = this.isEmpty(this.data) ? this.c3chart.data : this.data;
-                
-                if(this.charttype != 'default') { chart.data.type = this.charttype; }
-              
-                if(this.gridlines != "none" && this.gridlines != "") {
-                  chart.grid = {};
-                  
-                  if(this.gridlines=="x" || this.gridlines == "xy") {
-                    chart.grid.x = { show: true };
-                  }
-                  
-                 if(this.gridlines=="y" || this.gridlines == "xy") {
-                    chart.grid.y = { show: true };
-                  }
-                }
-              
-                if(this.legendposition != "") {
-                  chart.legend = {};
-                  
-                  if(this.legendposition != "none") {
-                    chart.legend = { position: this.legendposition };
-                  } else {
-                    chart.legend = { show: false };
-                  }            
+                    var chart = {};
 
-                }
-              
-                if(this.tooltip != "") {
-                  chart.tooltip = {grouped: true, show: true};                                   
-                  
-                  if(this.tooltip == "default") {
-                    chart.tooltip = { grouped: false };
-                  } 
-                  if(this.tooltip == "none") {
-                    chart.tooltip = { show: false };
-                  }            
+                    //this.data has priority over data set as component inner html
+                    chart.data = this.isEmpty(this.data) ? this.c3chart.data : this.data;
 
-                }
-              
-                chart.bindto = this.$.chart;
+                    if(this.charttype != 'default') { chart.data.type = this.charttype; }
 
-                this._chartContainer = c3.generate(chart);
-              
-                this.async(function() {
-                  this._chartContainer.resize();
-                 }, null, 100);
+                    if(this.gridlines != "none" && this.gridlines != "") {
+                      chart.grid = {};
+
+                      if(this.gridlines=="x" || this.gridlines == "xy") {
+                        chart.grid.x = { show: true };
+                      }
+
+                     if(this.gridlines=="y" || this.gridlines == "xy") {
+                        chart.grid.y = { show: true };
+                      }
+                    }
+
+                    if(this.legendposition != "") {
+                      chart.legend = {};
+
+                      if(this.legendposition != "none") {
+                        chart.legend = { position: this.legendposition };
+                      } else {
+                        chart.legend = { show: false };
+                      }            
+
+                    }
+
+                    if(this.tooltip != "") {
+                      chart.tooltip = {grouped: true, show: true};                                   
+
+                      if(this.tooltip == "default") {
+                        chart.tooltip = { grouped: false };
+                      } 
+                      if(this.tooltip == "none") {
+                        chart.tooltip = { show: false };
+                      }            
+
+                    }
+
+                    chart.bindto = this.$.chart;
+
+                    this._chartContainer = c3.generate(chart);
+
+                    this.async(function() {
+                      this._chartContainer.resize();
+                     }, null, 100);
                 }, 10);
             },
             
@@ -125,7 +128,7 @@
 				//if(!this.parentNode.id || !this.parentNode.id=="design_host") return;
 				
 				// get sample data 
-				var txt = this.$.dataContent.innerHTML.trim();
+				var txt = this.shadowRoot? this.innerHTML.trim() : this.$.dataContent.innerHTML.trim();
 				
                 if(txt){
                     var json = null;
