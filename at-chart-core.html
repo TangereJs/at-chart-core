@@ -1,31 +1,60 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../at-chart-core/c3-import.html">
 
-<polymer-element name="at-chart-core">
+<dom-module id="at-chart-core">
+    <link rel="stylesheet" href="../c3/c3.css">
+    <style>
+       :host {
+         position: relative;
+         box-sizing: border-box;
+         display: block;
+         width:100%;
+       }
+    </style>
     <template>      
-        <link rel="stylesheet" href="../c3/c3.css">
-          <style>
-           :host {
-             position: relative;
-             box-sizing: border-box;
-             display: block;
-             width:100%;
-           }
-        </style>
         <div style="border:4px solid transparent;">
-           <div id="chart">
+            <div id="chart">
+                
+            </div>
+        </div>
+        <div id="dataContent" style="display:none">
+            <content></content>
         </div>
     </template>
-
+</dom-module>
     <script>
-        Polymer('at-chart-core', { 
-            publish: {
-              charttype: { value: 'line', reflect: true },
-              gridlines: { value: 'none', reflect: true },
-              legendposition: { value: 'none', reflect: true },
-              tooltip: { value: 'none', reflect: true },
-              c3chart: {},
-              data: {}
+        Polymer({ 
+            is:'at-chart-core',
+            
+            properties: {
+              charttype: {
+                  type: String,
+                  value: 'line', 
+                  reflect: true 
+              },
+              gridlines: { 
+                  type: String,
+                  value: 'none', 
+                  reflect: true 
+              },
+              legendposition: { 
+                  type: String,
+                  value: 'none',
+                  reflect: true 
+              },
+              tooltip: {
+                  type: String, 
+                  value: 'none', 
+                  reflect: true 
+              },
+              c3chart: {
+                  type: Object,
+                  value: {}
+              },
+              data: {
+                  type: Object,
+                  value: {}
+              }
             },
           
             observe: {
@@ -33,9 +62,15 @@
             },
           
             initialize: function() {
+                if(!this._afterReady){
+                    return;
+                }
+                
+                this.debounce('initChard', function(){
                 var chart = {};
-                chart.data = {};              
-                Platform.mixin(chart,this.c3chart);              
+                    
+                //this.data has priority over data set as component inner html
+                chart.data = this.isEmpty(this.data) ? this.c3chart.data : this.data;
                 
                 if(this.charttype != 'default') { chart.data.type = this.charttype; }
               
@@ -49,7 +84,6 @@
                  if(this.gridlines=="y" || this.gridlines == "xy") {
                     chart.grid.y = { show: true };
                   }
-
                 }
               
                 if(this.legendposition != "") {
@@ -82,36 +116,58 @@
                 this.async(function() {
                   this._chartContainer.resize();
                  }, null, 100);
+                }, 10);
             },
             
-			domReady: function() {
+			ready: function() {
 		 
 				// exit if parent component is not running directly in designer
 				//if(!this.parentNode.id || !this.parentNode.id=="design_host") return;
 				
 				// get sample data 
-				var txt = this.innerHTML.trim();
-				if(!txt) return;
+				var txt = this.$.dataContent.innerHTML.trim();
 				
-				var json = null;
-				
-				try {
-					json = JSON.parse(txt);
-				}
-				catch(err) {		
-					var msg = document.createElement("div");
-					msg.innerHTML = "<br>Error: " + err.message + "<br>";
-					this.shadowRoot.appendChild(msg);
-				}
+                if(txt){
+                    var json = null;
 
-				if(json != null) {
-					this.c3chart = json;
-				}            
+                    try {
+                        json = JSON.parse(txt);
+                    }
+                    catch(err) {		
+                        var msg = document.createElement("div");
+                        msg.innerHTML = "<br>Error: " + err.message + "<br>";
+                        this.appendChild(msg);
+                    }
+
+                    if(json != null) {
+                        this.c3chart = json;
+                    }            
+                }
+                
+                this._afterReady = true;
+                
 				this.initialize();
 			},
-            ready: function () {
-				
-			}
+
+            isEmpty: function (obj) {
+                var hasOwnProperty = Object.prototype.hasOwnProperty;
+                // null and undefined are "empty"
+                if (obj == null) return true;
+
+                // Assume if it has a length property with a non-zero value
+                // that that property is correct.
+                if (obj.length > 0)    return false;
+                if (obj.length === 0)  return true;
+
+                // Otherwise, does it have any properties of its own?
+                // Note that this doesn't handle
+                // toString and valueOf enumeration bugs in IE < 9
+                for (var key in obj) {
+                    if (hasOwnProperty.call(obj, key)) return false;
+                }
+
+                return true;
+            }
         });
 
     </script>
