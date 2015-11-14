@@ -33,22 +33,30 @@
               charttype: {
                   type: String,
                   value: 'line', 
-                  reflect: true 
+                  reflect: true ,
+				  xtype: "enum",
+            	  xvaluelist: "bar,line,pie,donut,spline,step,area,area-spline,default"
               },
               gridlines: { 
                   type: String,
                   value: 'none', 
-                  reflect: true 
+                  reflect: true,
+				  xtype: "enum",
+            	  xvaluelist: "none,y,x,xy"
               },
               legendposition: { 
                   type: String,
                   value: 'none',
-                  reflect: true 
+                  reflect: true,
+				  xtype: "enum",
+            	  xvaluelist: "none,bottom,right,inset" 
               },
               tooltip: {
                   type: String, 
                   value: 'none', 
-                  reflect: true 
+                  reflect: true,
+				  xtype: "enum",
+            	  xvaluelist: "none,default,grouped" 
               },
               c3chart: {
                   type: Object,
