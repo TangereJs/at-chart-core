@@ -9,15 +9,21 @@
   <link rel="import" href="at-chart-core.html">
 
   <style>
+    #at_chart_core {
+      width: 260px;
+      height: 260px;
+      border: 1px dashed grey;
+    }
   </style>
 
 </head>
 
 <body>
 
-  <at-chart-core charttype="bar" gridlines="none" legendposition="bottom" id="at_chart_core">{
-    "data": { "columns": [ ["Taken", 2], ["Planned", 7], ["Remaining", 21] ], "groups": [ ["Taken", "Planned", "Remaining"] ], "labels": true },
-    "axis": { "rotated": true, "x": { "show": false}, "y": { "show": false} }
+  <at-chart-core charttype="pie" gridlines="none" legendposition="bottom" id="at_chart_core">{
+    "data": { "columns": [ ["Taken", 6], ["Planned", 2], ["Open", 2] ], "groups": [ ["Taken", "Planned", "Open"] ], "labels": true },
+    "axis": { "rotated": true, "x": { "show": false}, "y": { "show": false} },
+    "valueLabels": true
     }
   </at-chart-core>
     <script>

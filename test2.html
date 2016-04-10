@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <style>
+    table {
+      width: 100%;
+    }
+    
+    td {
+      background-color: beige;
+      text-align: center;
+      vertical-align: middle;
+    }
+    
+    .legendContainer {
+      text-align: center;
+    }
+    
+    .legend .entry {
+      display: inline-block;
+      margin-right: 8px;
+    }
+    
+    .legend .color {
+      width: 12px;
+      height: 12px;
+      background-color: beige;
+      display: inline-block;
+      margin-right: 4px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div style="width:300px;border:1px dashed grey">
+    <h1>Relative width</h1>
+    <table>
+      <tr>
+        <td style="width:20%">2</td>
+        <td style="width:50%">5</td>
+        <td style="width:30%">3</td>
+      </tr>
+    </table>
+
+    <h1>Relative width, not 100% (e.g. rounding)</h1>
+    <table>
+      <tr>
+        <td style="width:18%">2</td>
+        <td style="width:49%">5</td>
+        <td style="width:27%">3</td>
+      </tr>
+    </table>
+
+    <h1>expand to fit text</h1>
+    <table>
+      <tr>
+        <td style="width:1%">1% </td>
+        <td style="width:99%">99%</td>
+      </tr>
+    </table>
+
+    <h1>Legend</h1>
+    <div class="legendContainer">
+      <div class="legend">
+        <div class="entry">
+          <div class="color"></div>Taken
+        </div>
+        <div class="entry">
+          <div class="color"></div>Planned
+        </div>
+        <div class="entry">
+          <div class="color"></div>Open
+        </div>
+      </div>
+    </div>
+
+    <h1>Legend multi line</h1>
+    <div class="legendContainer">
+      <div class="legend">
+        <div class="entry">
+          <div class="color"></div>legend text 1
+        </div>
+        <div class="entry">
+          <div class="color"></div>legend text 2
+        </div>
+        <div class="entry">
+          <div class="color"></div>legend width a very long text
+        </div>
+        <div class="entry">
+          <div class="color"></div>legend text 4
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

@@ -79,6 +79,8 @@
         // copy json config if provided
         if(this.c3chart) chart = this.c3chart;
         
+        
+        
         //this.data has priority over data set as component inner html
         chart.data = this.isEmpty(this.data) ? this.c3chart.data : this.data;
 
@@ -135,6 +137,12 @@
             };
           }
 
+        }
+        
+        if(this.charttype == "pie" && this.c3chart.valueLabels == true) {
+          chart.pie = chart.pie || {};
+          chart.pie.label = chart.pie.label || {};
+          chart.pie.label.format = function (value, ratio, id) { return value; }
         }
 
         chart.bindto = this.$.chart;
