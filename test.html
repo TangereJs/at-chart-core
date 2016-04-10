@@ -1,12 +1,33 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">    
-    <script src="../webcomponentsjs/webcomponents-lite.js" charset="utf-8"></script>
-    <link rel="import" href="../polymer/polymer.html">    
-    <link rel="import" href="../at-doc-demo/at-doc-demo.html">
-  </head>
-  <body>
-    <at-doc-demo url="at-chart-core.html"></at-doc-demo>
-  </body>
+
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>at-chart-core Demo</title>
+
+  <script src="../webcomponentsjs/webcomponents.js"></script>
+  <link rel="import" href="at-chart-core.html">
+
+  <style>
+  </style>
+
+</head>
+
+<body>
+
+  <at-chart-core charttype="bar" gridlines="none" legendposition="bottom" id="at_chart_core">{
+    "data": { "columns": [ ["data1", 200], ["data2", 700], ["data3", 1700] ], "groups": [ ["data1", "data2", "data3"] ] },
+    "axis": { "rotated": true }
+    }
+  </at-chart-core>
+    <script>
+        document.addEventListener('WebComponentsReady', function() {
+            var atChartCore = document.getElementById("at_chart_core");
+
+        });
+
+
+    </script>
+</body>
+
 </html>
