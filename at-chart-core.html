@@ -1,6 +1,6 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../at-core-theme/at-core-theme.html">
-<link rel="import" href="../at-chart-core/c3-import.html">
+<link rel="import" href="../tangere/tangere.html">
+<link rel="import" href="../at-theme/at-theme.html">
+<link rel="import" href="c3-import.html">
 
 <dom-module id="at-chart-core">
   <link rel="stylesheet" href="../c3/c3.css">
@@ -14,7 +14,6 @@
     }
   </style>
   <template>
-    <at-core-theme></at-core-theme>
     <div style="border:4px solid transparent;">
       <div id="chart">
 
@@ -28,7 +27,6 @@
 <script>
   Polymer({
     is: 'at-chart-core',
-    _scopeCssViaAttr: true,
     properties: {
       charttype: {
         type: String,
@@ -83,9 +81,9 @@
 
         // copy json config if provided
         if(this.c3chart) chart = this.c3chart;
-        
-        
-        
+
+
+
         //this.data has priority over data set as component inner html
         chart.data = this.isEmpty(this.data) ? this.c3chart.data : this.data;
 
@@ -143,7 +141,7 @@
           }
 
         }
-        
+
         if(this.charttype == "pie" && this.c3chart.valueLabels == true) {
           chart.pie = chart.pie || {};
           chart.pie.label = chart.pie.label || {};
