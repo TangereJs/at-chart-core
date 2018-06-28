@@ -54,11 +54,23 @@
       },
       c3chart: {
         type: Object,
-        value: {}
+        value: function() {
+          return {
+            data: {
+              columms: [],
+              rows: [],
+            }
+          }
+        }
       },
       data: {
         type: Object,
-        value: {}
+        value: function() {
+          return {
+            columms: [],
+            rows: [],
+          };
+        }
       }
     },
     $meta: [{
