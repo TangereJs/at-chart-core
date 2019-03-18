@@ -1,10 +1,7 @@
 <link rel="import" href="../tangere/tangere.html">
 <link rel="import" href="../at-theme/at-theme.html">
-<link rel="import" href="c3-import.html">
-
+<script src="../at-chart-core/lib/dist_browser.chart.bundle.js"></script>
 <dom-module id="at-chart-core">
-  <link rel="stylesheet" href="../c3/c3.css">
-  <link rel="import" type="css" href="../c3/c3.css">
   <style>
     :host {
       position: relative;
@@ -15,9 +12,9 @@
   </style>
   <template>
     <div style="border:4px solid transparent;">
-      <div id="chart">
+      <canvas id="chart">
 
-      </div>
+      </canvas>
     </div>
     <div id="dataContent" style="display:none">
       <content></content>
@@ -28,50 +25,10 @@
   Polymer({
     is: 'at-chart-core',
     properties: {
-      charttype: {
-        type: String,
-        value: 'line',
-        xtype: "enum",
-        xvaluelist: "bar,line,pie,donut,spline,step,area,area-spline,default"
-      },
-      gridlines: {
-        type: String,
-        value: 'none',
-        xtype: "enum",
-        xvaluelist: "none,y,x,xy"
-      },
-      legendposition: {
-        type: String,
-        value: 'none',
-        xtype: "enum",
-        xvaluelist: "none,bottom,right,inset"
-      },
-      tooltip: {
-        type: String,
-        value: 'default',
-        xtype: "enum",
-        xvaluelist: "none,default,grouped"
-      },
-      c3chart: {
+      model: {
         type: Object,
-        value: function() {
-          return {
-            data: {
-              columms: [],
-              rows: [],
-            }
-          }
-        }
+        xtypelist: 'json'
       },
-      data: {
-        type: Object,
-        value: function() {
-          return {
-            columms: [],
-            rows: [],
-          };
-        }
-      }
     },
     $meta: [{
       type: "element",
@@ -79,143 +36,50 @@
       title: "Charts",
       icon: "now:chart"
     }],
+
     observers: [
-      'initialize(charttype, c3chart, data, gridlines, legendposition, tooltip)'
+      'modelChanged(model)'
     ],
 
-    initialize: function(charttype, c3chart, data, gridlines, legendposition, tooltip) {
-      if (!this._afterReady) {
-        return;
-      }
-
-      this.debounce('initChard', function() {
-        var chart = {};
-
-        // copy json config if provided
-        if (this.c3chart) chart = this.c3chart;
-
-        //this.data has priority over data set as component inner html
-        chart.data = this.isEmpty(this.data) ? this.c3chart.data : this.data;
-
-        if (this.charttype != 'default') {
-          chart.data.type = this.charttype;
-        }
-
-        if (this.gridlines != "none" && this.gridlines != "") {
-          chart.grid = {};
-
-          if (this.gridlines == "x" || this.gridlines == "xy") {
-            chart.grid.x = {
-              show: true
-            };
-          }
-
-          if (this.gridlines == "y" || this.gridlines == "xy") {
-            chart.grid.y = {
-              show: true
-            };
-          }
-        }
-
-        if (this.legendposition != "") {
-          chart.legend = {};
-
-          if (this.legendposition != "none") {
-            chart.legend = {
-              position: this.legendposition
-            };
-          } else {
-            chart.legend = {
-              show: false
-            };
-          }
-
-        }
-
-        if (this.tooltip != "") {
-          chart.tooltip = {
-            grouped: true,
-            show: true
-          };
-
-          if (this.tooltip == "default") {
-            chart.tooltip = {
-              grouped: false,
-              show: true
-            };
-          }
-          if (this.tooltip == "none") {
-            chart.tooltip = {
-              show: false
-            };
-          }
-
-        }
-
-        if (this.charttype == "pie" && this.c3chart.valueLabels == true) {
-          chart.pie = chart.pie || {};
-          chart.pie.label = chart.pie.label || {};
-          chart.pie.label.format = function(value, ratio, id) { return value; }
-        }
-
-        chart.bindto = this.$.chart;
-
-        this._chartContainer = c3.generate(chart);
-
-        this.async(function() {
-          this._chartContainer.resize();
-        }, null, 100);
-      }, 10);
+    modelChanged: function(model) {
+      this.model = model;
     },
 
     ready: function() {
 
-      // exit if parent component is not running directly in designer
-      //if(!this.parentNode.id || !this.parentNode.id=="design_host") return;
+      var self = this;
+      
+      // var definition = {
+      //             configuration: {
+      //               data: {
+      //                 labels: ['UK', 'USA', 'Germany'],
+      //                 datasets: [
+      //                   {
+      //                     label: '2018',
+      //                     data: [1354, 3434, 2456]
+      //                   },
+      //                   {
+      //                     label: '2019',
+      //                     data: [1245, 3646, 2234]
+      //                   }
+      //                 ]
+      //               },
+      //               options: {
+      //                 title: {
+      //                   display: true,
+      //                   text: 'Order Volume'
+      //                 }
+      //               }
+      //             },
+      //             template: 'bar'
+      //           };
 
-      // get sample data
-      var txt = this.shadowRoot ? this.innerHTML.trim() : this.$.dataContent.innerHTML.trim();
+      var definition = self.model;
+      var chart = this.$.chart;
 
-      if (txt) {
-        var json = null;
+      createChart(chart, definition);
 
-        try {
-          json = JSON.parse(txt);
-        } catch (err) {
-          var msg = document.createElement("div");
-          msg.innerHTML = "<br>Error: " + err.message + "<br>";
-          this.appendChild(msg);
-        }
-
-        if (json != null) {
-          this.c3chart = json;
-        }
-      }
-
-      this._afterReady = true;
-
-      this.initialize();
     },
-
-    isEmpty: function(obj) {
-      var hasOwnProperty = Object.prototype.hasOwnProperty;
-      // null and undefined are "empty"
-      if (obj == null) return true;
-
-      // Assume if it has a length property with a non-zero value
-      // that that property is correct.
-      if (obj.length > 0) return false;
-      if (obj.length === 0) return true;
-
-      // Otherwise, does it have any properties of its own?
-      // Note that this doesn't handle
-      // toString and valueOf enumeration bugs in IE < 9
-      for (var key in obj) {
-        if (hasOwnProperty.call(obj, key)) return false;
-      }
-
-      return true;
-    }
   });
 </script>
 </polymer-element>
