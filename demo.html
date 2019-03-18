@@ -48,15 +48,15 @@
       <option value="grouped">grouped</option>
     </select>
   </fieldset>
-  <at-chart-core charttype="bar" legendposition="bottom" tooltip="default" id="at_chart_core_top" data='{ "columns": [ ["data1", 100, 200, 150, 300, 200], ["data2", 400, 500, 250, 700, 300] ] }' ></at-chart-core>
+  <at-chart-core id="at_chart_core_top" model='{"configuration":{"type":"bar","data":{ "labels":["UK","USA","Germany" ], "datasets":[ { "label":"2018","data":[ 1354,3434, 2456 ] }, {"label":"2019","data":[ 1245,3646, 2234 ] } ] }, "options":{ "title":{ "display":true, "text":"Order Volumes" } } }, "template":"bar"}'></at-chart-core>
   <br>
   <h2>Line Chart</h2>
-  <at-chart-core gridlines="xy" legendposition="right" tooltip="grouped" id="at_chart_core_bottom">{
-    "data": { "columns": [ ["data1", 100, 200, 150, 300, 200], ["data2", 400, 500, 250, 700, 300] ] }
-    }
+  <at-chart-core id="at_chart_core_bottom">
   </at-chart-core>
+  
     <script>
         document.addEventListener('WebComponentsReady', function() {
+          
             var atChartCoreTop = document.getElementById("at_chart_core_top");
 
             var charttype = document.getElementById("charttype");
@@ -83,6 +83,7 @@
 
 
     </script>
+
 </body>
 
 </html>
