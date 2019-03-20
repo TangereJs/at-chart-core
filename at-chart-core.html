@@ -43,30 +43,32 @@
       'modelChanged(model)'
     ],
 
-    modelChanged: function(model) {
+    modelChanged: function (model) {
 
       var definition;
 
       if (Object.prototype.toString.call(model) === "[object String]") {
-        definition = JSON.parse(model);
+       parsedModel = JSON.parse(model);
+       definition = parsedModel.chart;
       }
 
       if (Object.prototype.toString.call(model) !== "[object String]") {
-        definition = model;
+       definition = model;
       }
 
-
-      
       this.initialize(definition);
     },
 
-    initialize: function(definition) {
+    initialize: function (definition) {
       var self = this;
       var def = definition;
       var canvas = self.$.chart;
 
-      
       createChart(canvas, def);
+    },
+
+    actionListener: function (event) {
+      this.model = event.detail.model.state.model.chart;
     },
 
     ready: function() {
