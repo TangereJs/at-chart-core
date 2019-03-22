@@ -10,16 +10,11 @@
       width: 100%;
     }
   </style>
-  <template>
-    <div style="border:4px solid transparent;">
-      <canvas id="chart">
-
-      </canvas>
-    </div>
-    <div id="dataContent" style="display:none">
-      <content></content>
-    </div>
-  </template>
+    <template>
+      <div style="border:4px solid transparent;">
+        <canvas id="chart"></canvas>
+      </div>
+    </template>
 </dom-module>
 <script>
   Polymer({
@@ -32,13 +27,18 @@
         xgridcols: '12'
       },
     },
+
+    modelRoot: {
+      type: String,
+      value: "state.chart"
+    },
+
     $meta: [{
       type: "element",
       xtype: "at-chart-core",
       title: "Charts",
       icon: "now:chart"
     }],
-
     observers: [
       'modelChanged(model)'
     ],
@@ -48,12 +48,12 @@
       var definition;
 
       if (Object.prototype.toString.call(model) === "[object String]") {
-       parsedModel = JSON.parse(model);
-       definition = parsedModel.chart;
+        parsedModel = JSON.parse(model);
+        definition = parsedModel.chart;
       }
 
       if (Object.prototype.toString.call(model) !== "[object String]") {
-       definition = model;
+        definition = model;
       }
 
       this.initialize(definition);
@@ -68,10 +68,11 @@
     },
 
     actionListener: function (event) {
+
       this.model = event.detail.model.state.model.chart;
     },
 
-    ready: function() {
+    ready: function () {
 
     },
   });
