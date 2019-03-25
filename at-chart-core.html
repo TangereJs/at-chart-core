@@ -1,6 +1,7 @@
 <link rel="import" href="../tangere/tangere.html">
 <link rel="import" href="../at-theme/at-theme.html">
 <script src="../at-chart-core/lib/dist_browser.chart.bundle.js"></script>
+
 <dom-module id="at-chart-core">
   <style>
     :host {
@@ -16,6 +17,7 @@
       </div>
     </template>
 </dom-module>
+
 <script>
   Polymer({
     is: 'at-chart-core',
@@ -36,7 +38,7 @@
     $meta: [{
       type: "element",
       xtype: "at-chart-core",
-      title: "Chart",
+      title: "Charts",
       icon: "now:chart"
     }],
     observers: [
@@ -56,10 +58,18 @@
         definition = model;
       }
 
-      this.initialize(definition);
+      if (definition && definition.configuration && definition.configuration.options) {
+
+        // hide title as card has title element
+        if (definition.configuration.options.title) {
+          definition.configuration.options.title.display = false;
+        }
+      }
+
+      this._initialize(definition);
     },
 
-    initialize: function (definition) {
+    _initialize: function (definition) {
       var self = this;
       var def = definition;
       var canvas = self.$.chart;
@@ -77,4 +87,4 @@
     },
   });
 </script>
-</polymer-element>
+
