@@ -10,10 +10,16 @@
       display: block;
       width: 100%;
     }
+
+    .canvasSize {
+      max-height:100% !important;
+        max-width:100% !important;
+    }
+
   </style>
     <template>
       <div style="border:4px solid transparent;">
-        <canvas id="chart"></canvas>
+        <canvas class="canvasSize" id="chart"></canvas>
       </div>
     </template>
 </dom-module>
