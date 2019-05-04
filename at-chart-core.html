@@ -3,25 +3,24 @@
 <link rel="import" href="at-chart-core-lib.html">
 
 <dom-module id="at-chart-core">
-  <style>
-    :host {
-      position: relative;
-      box-sizing: border-box;
-      display: block;
-      width: 100%;
-    }
+  <template>
+    <style>
+      :host {
+        position: relative;
+        box-sizing: border-box;
+        display: block;
+        width: 100%;
+      }
 
-    .canvasSize {
-      max-height:100% !important;
-        max-width:100% !important;
-    }
-
-  </style>
-    <template>
-      <div style="border:4px solid transparent;">
-        <canvas class="canvasSize" id="chart"></canvas>
-      </div>
-    </template>
+      .canvasSize {
+        max-height: 100% !important;
+        max-width: 100% !important;
+      }
+    </style>
+    <div style="border:4px solid transparent;">
+      <canvas class="canvasSize" id="chart"></canvas>
+    </div>
+  </template>
 </dom-module>
 
 <script>
@@ -93,4 +92,3 @@
     },
   });
 </script>
-
