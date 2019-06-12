@@ -33,11 +33,11 @@
         mode: "json",
         xgridcols: '12'
       },
-    },
 
-    modelRoot: {
-      type: String,
-      value: "state.chart"
+      modelRoot: {
+        type: String,
+        value: ""
+      },
     },
 
     $meta: [{
@@ -78,13 +78,42 @@
       var self = this;
       var def = definition;
       var canvas = self.$.chart;
-
-      createChart(canvas, def);
+      
+      if (this._chart) {
+        this._chart.destroy();
+        this._chart = null;
+      }
+      
+      this._chart = createChart(canvas, def);
     },
 
     actionListener: function (event) {
+      var _model = event.detail.model;
+      
+      if (this.modelRoot) {
+        _model = this._getObjPath(_model, this.modelRoot);
+      } else {
+        _model = event.detail.model.state.model.chart;
+      }
 
-      this.model = event.detail.model.state.model.chart;
+      this.model = _model;
+    },
+
+    _getObjPath: function (obj, path) {
+      if (!path) return obj;
+
+      var paths = path.split('.'),
+        current = obj;
+
+      for (var i = 0; i < paths.length; ++i) {
+        if (current[paths[i]] == undefined) {
+          return undefined;
+        } else {
+          current = current[paths[i]];
+        }
+      }
+
+      return current;
     },
 
     ready: function () {
