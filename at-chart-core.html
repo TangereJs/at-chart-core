@@ -87,6 +87,8 @@
     },
 
     _initialize: function (definition) {
+      if (!definition) return;
+
       var self = this;
       var def = definition;
       var canvas = self.$.chart;
