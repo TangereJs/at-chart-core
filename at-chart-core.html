@@ -66,6 +66,7 @@
       var definition;
 
       if (Object.prototype.toString.call(model) === "[object String]") {
+        if(model === "") model = "{}";
         parsedModel = JSON.parse(model);
         definition = parsedModel.chart;
       }
